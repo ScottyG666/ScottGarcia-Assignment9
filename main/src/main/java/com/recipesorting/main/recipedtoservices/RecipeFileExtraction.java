@@ -14,23 +14,38 @@ import org.springframework.stereotype.Service;
 
 import com.recipesorting.main.recipedtopojo.RecipeDTO;
 
+//this class is solely for intaking the Recipe file name, parsing through it, and returning a list
+//of the RecipeDTOs for easy access to filter.
 @Service
 public class RecipeFileExtraction {
-
+	
 	public List<RecipeDTO> listOfRecipeDTOFromFile (String fileName) {
+		//Eventual list to be returned containing the individual CSVRecords turned into 
+		//RecipeDTOs
 		List<RecipeDTO> listOfRecipesToReturn = new ArrayList<>();
+		
+		//This code is surrounded in a try catch so that implementations of this code do NOT
+		//have to throw exceptions, all exception handling is done within the method
 		try (Reader fileIn = new FileReader(fileName)){
 			
-			CSVFormat format = CSVFormat.Builder.create()
+			//the Format is predefined(for use with multiple files that have the same 
+			//structure), to be passed into the CSVParser.
+			//This is the Apache Commons CSV 1.9 recommended syntax
+			CSVFormat recipeCSVRecordFormat = CSVFormat.Builder.create()
 												 .setHeader()
 												 .setSkipHeaderRecord(true)
 												 .setIgnoreSurroundingSpaces(true)
 												 .setEscape('\\')
 												 .build();
+			//The predefined Format is passed into the parser with the Instantiation of the
+			//Reader containing the fileName
+			Iterable<CSVRecord> parsedCSVRecords = CSVParser.parse(fileIn, recipeCSVRecordFormat);
 			
-			Iterable<CSVRecord> parsedCSVRecords = CSVParser.parse(fileIn, format);
-			
+			//Iterating through the Iterable CSVRecords returned from the parser, and adding them to the
+			//RecipeDTO list
 			for (CSVRecord record : parsedCSVRecords) {
+				//The CSVRecord is added to the RecipeDTO list after instantiating a new RecipeDTO
+				//using the RecipeDTO's constructor Method that accepts a CSVRecord
 				listOfRecipesToReturn.add(new RecipeDTO(record));
 				
 			}
@@ -42,7 +57,7 @@ public class RecipeFileExtraction {
 			e.printStackTrace();
 		}
 		
-		
+		//returning the List od RecipeDTO's that were added when iterating through the CSVRecords
 		return listOfRecipesToReturn;
 	}
 	

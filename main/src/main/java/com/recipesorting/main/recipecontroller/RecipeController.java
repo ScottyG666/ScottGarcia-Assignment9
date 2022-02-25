@@ -14,7 +14,7 @@ public class RecipeController {
 	//be pulled from  a request
 	private static final String FILE_NAME = "recipe.txt";
 	
-	//this method filters the requested list of recipes based on the parameters as described in the
+	//this Class Instantiation filters the requested list of recipes based on the parameters as described in the
 	//names of this Class's methods
 	@Autowired
 	RecipeOrganizationService recipeOrganizer;
