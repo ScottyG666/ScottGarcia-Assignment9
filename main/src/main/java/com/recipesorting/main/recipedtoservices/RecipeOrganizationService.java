@@ -22,8 +22,8 @@ public class RecipeOrganizationService {
 		//The listOfRecipeDTOFromFile returns a List<RecipeDTO> that is being streamed in order
 			//to enact the *toString()* method, before collecting ALL RECIPES to a list
 		return fileExtractor.listOfRecipeDTOFromFile(fileName).stream()
-				.map(RecipeDTO::toString)
-				.collect(Collectors.toList());
+													   		  .map(RecipeDTO::toString)
+															  .collect(Collectors.toList());
 	}
 	
 	//performs the same function as *getAllRecipes but filters for recipes where the variable
